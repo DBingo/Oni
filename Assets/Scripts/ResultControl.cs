@@ -1,9 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
-
+﻿
 public class ResultControl
 {
-
     // 总击飞数量 rank 评分区间
     private const int oni_defeat_rank_excellent = 400;
     private const int oni_defeat_rank_good = 200;
@@ -44,8 +41,8 @@ public class ResultControl
     // 总击飞数量的 rank
     public int getDefeatRank()
     {
-        if (oni_defeat_score >= oni_defeat_rank_excellent)    return 3;
-        else if (oni_defeat_score >= oni_defeat_rank_good)    return 2;
+        if (oni_defeat_score >= oni_defeat_rank_excellent) return 3;
+        else if (oni_defeat_score >= oni_defeat_rank_good) return 2;
         else if (oni_defeat_score >= oni_defeat_rank_normal) return 1;
         else return 0;
     }

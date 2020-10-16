@@ -1,29 +1,22 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class AttackColliderControl : MonoBehaviour
 {
     public PlayerControl player = null;
-
     private bool is_attacking = false;
 
-
-    // Start is called before the first frame update
     void Start()
     {
         this.SetAttack(false);
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     private void OnTriggerStay(Collider other)
     {
-
         if (this.is_attacking && other.tag == "OniGroup")
         {
             // OniGroupControl 触发被攻击效果

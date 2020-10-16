@@ -1,19 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class LevelControl
 {
     public SceneControl scene_control = null;
     public GameObject OniGroupPrefab = null;
     public PlayerControl player = null;
-
     private float oni_generate_line;
     private float appear_margin = 15.0f;
-
     private int oni_appear_num = 1;
     private int no_miss_count = 0;
-
     public enum GROUP_TYPE
     {
         NONE = -1,
@@ -24,30 +19,22 @@ public class LevelControl
         NORMAL,
         NUM,
     }
-
     public GROUP_TYPE group_type = GROUP_TYPE.NORMAL;
     public GROUP_TYPE group_type_next = GROUP_TYPE.NORMAL;
-
     private bool can_dispatch = false;
-
     public bool is_random = true;
-
     private float next_line = 50.0f;
     private float next_speed = OniGroupControl.SPEED_MIN * 5.0f;
-
     private int normal_count = 5;
     private int event_count = 1;
-
     private GROUP_TYPE event_type = GROUP_TYPE.NONE;
-
     public const float INTERVAL_MIN = 20.0f;
     public const float INTERVAL_MAX = 50.0f;
-
     public void create()
     {
         this.oni_generate_line = this.player.transform.position.x - 1.0f;
     }
-    
+
     public void OnPlayerMissed()
     {
         this.oni_appear_num = 1;
@@ -57,9 +44,9 @@ public class LevelControl
     public void oniAppearControl()
     {
 #if true
-        for(int i = 0; i < 4; i++)
+        for (int i = 0; i < 4; i++)
         {
-            if(Input.GetKeyDown((KeyCode)(KeyCode.Alpha1 + i)))
+            if (Input.GetKeyDown((KeyCode)(KeyCode.Alpha1 + i)))
             {
                 this.group_type_next = (GROUP_TYPE)i;
                 this.is_random = false;
@@ -75,7 +62,7 @@ public class LevelControl
         {
             if (this.is_special_group())
             {
-                if(GameObject.FindGameObjectsWithTag("OniGroup").Length == 0)
+                if (GameObject.FindGameObjectsWithTag("OniGroup").Length == 0)
                 {
                     this.can_dispatch = true;
                 }
@@ -87,11 +74,11 @@ public class LevelControl
 
             if (this.can_dispatch)
             {
-                if(this.group_type_next == GROUP_TYPE.NORMAL)
+                if (this.group_type_next == GROUP_TYPE.NORMAL)
                 {
                     this.oni_generate_line = this.player.transform.position.x + this.next_line;
                 }
-                else if(this.group_type_next == GROUP_TYPE.SLOW)
+                else if (this.group_type_next == GROUP_TYPE.SLOW)
                 {
                     this.oni_generate_line = this.player.transform.position.x + 50.0f;
                 }
@@ -104,7 +91,7 @@ public class LevelControl
 
         do
         {
-            if(this.scene_control.oni_group_num >= this.scene_control.oni_group_appear_max)
+            if (this.scene_control.oni_group_num >= this.scene_control.oni_group_appear_max)
             {
                 break;
             }
@@ -112,7 +99,7 @@ public class LevelControl
             {
                 break;
             }
-            if(this.player.transform.position.x <= this.oni_generate_line)
+            if (this.player.transform.position.x <= this.oni_generate_line)
             {
                 break;
             }
@@ -156,7 +143,7 @@ public class LevelControl
 
     public bool is_special_group()
     {
-        if(
+        if (
             this.group_type == GROUP_TYPE.PASSING ||
             this.group_type_next == GROUP_TYPE.PASSING ||
             this.group_type == GROUP_TYPE.DECELERATE ||
@@ -173,10 +160,10 @@ public class LevelControl
 
     public void select_next_group_type()
     {
-        if(this.event_type != GROUP_TYPE.NONE)
+        if (this.event_type != GROUP_TYPE.NONE)
         {
             this.event_count--;
-            if(this.event_count <= 0)
+            if (this.event_count <= 0)
             {
                 this.event_type = GROUP_TYPE.NONE;
                 this.normal_count = Random.Range(3, 7);
@@ -186,7 +173,7 @@ public class LevelControl
         {
             this.normal_count--;
 
-            if(this.normal_count <= 0)
+            if (this.normal_count <= 0)
             {
                 this.event_type = (GROUP_TYPE)Random.Range(0, 4);
                 switch (this.event_type)
@@ -204,7 +191,7 @@ public class LevelControl
             }
         }
 
-        if(this.event_type == GROUP_TYPE.NONE)
+        if (this.event_type == GROUP_TYPE.NONE)
         {
             float rate;
             rate = (float)this.no_miss_count / 10.0f;

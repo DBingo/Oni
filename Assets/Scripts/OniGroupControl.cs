@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class OniGroupControl : MonoBehaviour
 {
@@ -73,79 +71,83 @@ public class OniGroupControl : MonoBehaviour
         switch (this.type)
         {
             case TYPE.DECELERATE:
-            {
-                const float decelerate_start = 8.0f;
-                if (this.decelerate.is_active){
-                    float rate;
-                    const float time0 = 0.7f;
-                    const float time1 = 0.4f;
-                    const float time2 = 2.0f;
-
-                    const float speed_max = 30.0f;
-                    float speed_min = OniGroupControl.SPEED_MIN;
-
-                    float time = this.decelerate.timer;
-
-                    do {
-                        if(time < time0)
-                        {
-                            rate = Mathf.Clamp01(time / time0);
-                            rate = (Mathf.Sin(Mathf.Lerp(-Mathf.PI / 2.0f, Mathf.PI / 2.0f, rate)) + 1.0f) / 2.0f;
-
-                            this.run_speed = Mathf.Lerp(this.decelerate.speed_base, speed_max, rate);
-
-                            //this.set_oni_motion_speed(2.0f);
-                            break;
-                        }
-
-                        time -= time0;
-
-                        if(time < time1)
-                        {
-                            rate = Mathf.Clamp01(time / time1);
-                            rate = (Mathf.Sin(Mathf.Lerp(-Mathf.PI / 2.0f, Mathf.PI / 2.0f, rate)) + 1.0f) / 2.0f;
-
-                            this.run_speed = Mathf.Lerp(speed_max, PlayerControl.RUN_SPEED_MAX, rate);
-                            break;
-                        }
-
-                        time -= time1;
-
-                        if(time < time2)
-                        {
-                            rate = Mathf.Clamp01(time / time2);
-                            rate = (Mathf.Sin(Mathf.Lerp(-Mathf.PI / 2.0f, Mathf.PI / 2.0f, rate)) + 1.0f) / 2.0f;
-
-                            this.run_speed = Mathf.Lerp(PlayerControl.RUN_SPEED_MAX, speed_min, rate);
-                            //this.set_oni_motion_speed(1.0f);
-                            break;
-                        }
-
-                        time -= time2;
-
-                        this.run_speed = speed_min;
-
-                    } while (false);
-
-                    this.decelerate.timer += Time.deltaTime;
-                    
-                }else{
-                    float distance = this.transform.position.x - this.player.transform.position.x;
-                    if(distance < decelerate_start)
+                {
+                    const float decelerate_start = 8.0f;
+                    if (this.decelerate.is_active)
                     {
-                        this.decelerate.is_active = true;
-                        this.decelerate.speed_base = this.run_speed;
-                        this.decelerate.timer = 0.0f;
+                        float rate;
+                        const float time0 = 0.7f;
+                        const float time1 = 0.4f;
+                        const float time2 = 2.0f;
+
+                        const float speed_max = 30.0f;
+                        float speed_min = OniGroupControl.SPEED_MIN;
+
+                        float time = this.decelerate.timer;
+
+                        do
+                        {
+                            if (time < time0)
+                            {
+                                rate = Mathf.Clamp01(time / time0);
+                                rate = (Mathf.Sin(Mathf.Lerp(-Mathf.PI / 2.0f, Mathf.PI / 2.0f, rate)) + 1.0f) / 2.0f;
+
+                                this.run_speed = Mathf.Lerp(this.decelerate.speed_base, speed_max, rate);
+
+                                //this.set_oni_motion_speed(2.0f);
+                                break;
+                            }
+
+                            time -= time0;
+
+                            if (time < time1)
+                            {
+                                rate = Mathf.Clamp01(time / time1);
+                                rate = (Mathf.Sin(Mathf.Lerp(-Mathf.PI / 2.0f, Mathf.PI / 2.0f, rate)) + 1.0f) / 2.0f;
+
+                                this.run_speed = Mathf.Lerp(speed_max, PlayerControl.RUN_SPEED_MAX, rate);
+                                break;
+                            }
+
+                            time -= time1;
+
+                            if (time < time2)
+                            {
+                                rate = Mathf.Clamp01(time / time2);
+                                rate = (Mathf.Sin(Mathf.Lerp(-Mathf.PI / 2.0f, Mathf.PI / 2.0f, rate)) + 1.0f) / 2.0f;
+
+                                this.run_speed = Mathf.Lerp(PlayerControl.RUN_SPEED_MAX, speed_min, rate);
+                                //this.set_oni_motion_speed(1.0f);
+                                break;
+                            }
+
+                            time -= time2;
+
+                            this.run_speed = speed_min;
+
+                        } while (false);
+
+                        this.decelerate.timer += Time.deltaTime;
+
+                    }
+                    else
+                    {
+                        float distance = this.transform.position.x - this.player.transform.position.x;
+                        if (distance < decelerate_start)
+                        {
+                            this.decelerate.is_active = true;
+                            this.decelerate.speed_base = this.run_speed;
+                            this.decelerate.timer = 0.0f;
+                        }
                     }
                 }
-            }
-            break;
+                break;
 
             case TYPE.LEAVE:
-            {
-                this.run_speed = LEAVE_SPEED + this.player.run_speed;
-            }
-            break;
+                {
+                    this.run_speed = LEAVE_SPEED + this.player.run_speed;
+                }
+                break;
         }
     }
 
@@ -176,7 +178,7 @@ public class OniGroupControl : MonoBehaviour
 
         Vector3 position;
 
-        for(int i = 0; i < this.oni_num; i++)
+        for (int i = 0; i < this.oni_num; i++)
         {
             GameObject go = Instantiate(this.OniPrefab[i % this.OniPrefab.Length]) as GameObject;
 
@@ -198,7 +200,7 @@ public class OniGroupControl : MonoBehaviour
                 position.z += Random.Range(-splat_range.z, splat_range.z);
             }
 
-            position.y = 0.0f;
+            position.y = 0.5f;
 
             this.onis[i].transform.position = position;
             this.onis[i].transform.parent = this.transform;
@@ -258,7 +260,7 @@ public class OniGroupControl : MonoBehaviour
             blowout = Quaternion.AngleAxis(forward_back_angle, Vector3.forward) * blowout;
             blowout_speed = blowout_speed_base * Random.Range(0.8f, 1.2f);
             blowout *= blowout_speed;
-            
+
             Vector3 angular_velocity = Vector3.Cross(Vector3.up, blowout);
             angular_velocity.Normalize();
 
@@ -281,4 +283,9 @@ public class OniGroupControl : MonoBehaviour
         Destroy(this.gameObject);
     }
 
+    public void beginLeave()
+    {
+        this.GetComponent<Collider>().enabled = false;
+        this.type = TYPE.LEAVE;
+    }
 }
