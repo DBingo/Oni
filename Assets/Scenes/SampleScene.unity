@@ -389,7 +389,7 @@ MonoBehaviour:
   main_camera: {fileID: 0}
   score_control: {fileID: 0}
   oni_group_num: 0
-  oni_group_appear_max: 50
+  oni_group_appear_max: 10
   oni_group_complite: 0
   oni_group_defeat_num: 0
   oni_group_miss_num: 0

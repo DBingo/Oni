@@ -26,7 +26,7 @@ public class OniControl : MonoBehaviour
 
         this.transform.rotation = Quaternion.AngleAxis(180.0f, Vector3.up);
 
-        // this.GetComponent<Collider>().enabled = false;
+        this.GetComponent<Collider>().enabled = false;
         this.GetComponent<Rigidbody>().maxAngularVelocity = float.PositiveInfinity;
     }
 

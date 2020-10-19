@@ -16,7 +16,7 @@ public class SceneControl : MonoBehaviour
 
     // 计算分数使用 ------------------------------------------------------------------- //
     public int oni_group_num = 0;
-    public int oni_group_appear_max = 50;
+    public int oni_group_appear_max = 10;
     public static int oni_group_penalty = 1;
     public int oni_group_complite = 0;
     public int oni_group_defeat_num = 0;
@@ -182,10 +182,10 @@ public class SceneControl : MonoBehaviour
 
             case STATE.ONI_FALL_WAIT:
                 {
-                    if (!this.score_control.isActive() && this.state_timer > 1.5f)
-                    {
-                        this.next_state = STATE.RESULT_DEFEAT;
-                    }
+                    //if (!this.score_control.isActive() && this.state_timer > 1.5f)
+                    //{
+                    //    this.next_state = STATE.RESULT_DEFEAT;
+                    //}
                 }
                 break;
 
@@ -235,6 +235,8 @@ public class SceneControl : MonoBehaviour
         this.oni_group_complite++;
         this.oni_group_appear_max -= oni_group_penalty;
         this.evaluation = EVALUATION.MISS;
+
+        this.level_control.OnPlayerMissed();
 
         this.result.eval_count[(int)this.evaluation]++;
 

@@ -275,7 +275,8 @@ public class LevelControl
 
         new_group.transform.position = position;
 
-        new_group.main_camera = GameObject.FindGameObjectWithTag("MainCamera");
+        new_group.scene_control = this.scene_control;
+        new_group.main_camera = this.scene_control.main_camera;
         new_group.player = this.player;
         new_group.run_speed = speed;
         new_group.type = type;

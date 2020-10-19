@@ -186,6 +186,8 @@ public class PlayerControl : MonoBehaviour
                 this.next_state = STATE.MISS;
 
                 // 和怪物碰撞的处理
+
+                this.scene_control.OnPlayerMissed();
             }
         }
 

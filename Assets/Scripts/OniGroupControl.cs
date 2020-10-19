@@ -6,6 +6,8 @@ public class OniGroupControl : MonoBehaviour
 
     public GameObject main_camera = null;
 
+    public SceneControl scene_control = null;
+
     public GameObject[] OniPrefab;
 
     public OniControl[] onis;
@@ -214,6 +216,9 @@ public class OniGroupControl : MonoBehaviour
 
     public void OnAttackedFromPlayer()
     {
+        this.scene_control.AddDefeatNum(this.oni_num);
+
+
         Vector3 blowout;
         Vector3 blowout_up;
         Vector3 blowout_xz;
@@ -236,6 +241,44 @@ public class OniGroupControl : MonoBehaviour
         forward_back_angle = 40.0f;  // 往人物后方飞（画面左边，左手坐标系，大拇指朝屏幕，四指方向转40°）
         y_angle_center = 180.0f;     // 因为往后方飞，所以旋转了 180°
         y_angle_swing = 10.0f;
+
+
+        switch (this.scene_control.evaluation)
+        {
+            default:
+            case SceneControl.EVALUATION.OKAY:
+                {
+                    base_radius = 0.3f;
+                    blowout_speed_base = 10.0f;
+                    forward_back_angle = 40.0f;
+                    y_angle_center = 180.0f;
+                    y_angle_swing = 10.0f;
+                }
+                break;
+            case SceneControl.EVALUATION.GOOD:
+                {
+                    base_radius = 0.3f;
+                    blowout_speed_base = 10.0f;
+                    forward_back_angle = 0.0f;
+                    y_angle_center = 0.0f;
+                    y_angle_swing = 60.0f;
+                }
+                break;
+
+            case SceneControl.EVALUATION.GREAT:
+                {
+                    base_radius = 0.5f;
+                    blowout_speed_base = 15.0f;
+                    forward_back_angle = -20.0f;
+                    y_angle_center = 0.0f;
+                    y_angle_swing = 30.0f;
+                }
+                break;
+        }
+
+
+
+
 
         forward_back_angle += Random.Range(-5.0f, 5.0f);
 
