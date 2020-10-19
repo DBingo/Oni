@@ -5,14 +5,15 @@ public class SceneControl : MonoBehaviour
     // 生成的怪物组
     public GameObject OniGroupPrefab = null;
     // 结束画面的怪物小山
-    //public GameObject OniPrefab = null;
-    //public GameObject OniEmitterPrefab = null;
-    //public GameObject[] OniYamaPrefab;
+    public GameObject[] OniYamaPrefab;
+    public GameObject OniEmitterPrefab = null;
+    // -----------------
     public PlayerControl player = null;
     public GameObject main_camera = null;
     public LevelControl level_control = null;
     public ResultControl result_control = null;
     public ScoreControl score_control = null;
+    public OniEmitterControl oni_emitter = null;
 
     // 计算分数使用 ------------------------------------------------------------------- //
     public int oni_group_num = 0;
@@ -65,6 +66,7 @@ public class SceneControl : MonoBehaviour
     // 一些设定常量 ------------------------------------------------------------------- //
     public const int ONI_APPEAR_NUM_MAX = 10; // 生成的每组最大怪物数量
     private const float START_TIME = 2.0f;    // 开始文字显示时间
+    private const float GOAL_STOP_DISTANCE = 3.0f;  // 结束时，怪物小山与玩家停下位置的距离
 
     // 游戏整体的结果 ------------------------------------------------------------------ //
     public struct Result
@@ -77,6 +79,8 @@ public class SceneControl : MonoBehaviour
     };
 
     public Result result;
+
+    // -----------------------------------------------------------------------------------
 
     void Start()
     {
@@ -176,7 +180,10 @@ public class SceneControl : MonoBehaviour
 
             case STATE.GOAL:
                 {
-                    this.next_state = STATE.ONI_FALL_WAIT;
+                    if(this.oni_emitter.oni_num == 0)
+                    {
+                        this.next_state = STATE.ONI_FALL_WAIT;
+                    }
                 }
                 break;
 
@@ -207,7 +214,50 @@ public class SceneControl : MonoBehaviour
                     {
                         this.player.StopRequest();
 
-                        // 生成怪物山
+                        // 根据结果的 rank 生成怪物山
+                        //if(this.result_control.getTotalRank() > 0)
+                        //{
+                            GameObject oni_yama = Instantiate(this.OniYamaPrefab[2]) as GameObject;
+
+                            Vector3 oni_yama_position = this.player.transform.position;
+
+                            oni_yama_position.x += this.player.CalcDistanceToStop();
+                            oni_yama_position.x += SceneControl.GOAL_STOP_DISTANCE;
+
+                            oni_yama_position.y = 0.5f;
+
+                            oni_yama.transform.position = oni_yama_position;
+                        //}
+                    }
+                    break;
+
+                case STATE.GOAL:
+                    {
+                        GameObject go = Instantiate(this.OniEmitterPrefab) as GameObject;
+
+                        this.oni_emitter = go.GetComponent<OniEmitterControl>();
+
+                        Vector3 emitter_position = oni_emitter.transform.position;
+
+                        emitter_position.x = this.player.transform.position.x;
+                        emitter_position.x += this.player.CalcDistanceToStop();
+                        emitter_position.x += SceneControl.GOAL_STOP_DISTANCE;
+
+                        emitter_position.y = 10;
+                        this.oni_emitter.transform.position = emitter_position;
+
+                        int oni_num = 0;
+                        switch (this.result_control.getTotalRank())
+                        {
+                            case 0: oni_num = Mathf.Min(this.result.oni_defeat_num, 10); break;
+                            case 1: oni_num = 6; break;
+                            case 2: oni_num = 10; break;
+                            case 3: oni_num = 20; break;
+                        }
+
+                        oni_num = 10;
+
+                        this.oni_emitter.oni_num = oni_num;
                     }
                     break;
             }

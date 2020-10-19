@@ -257,6 +257,13 @@ public class PlayerControl : MonoBehaviour
 
     }
 
+    public float CalcDistanceToStop()
+    {
+        float distance = this.GetComponent<Rigidbody>().velocity.sqrMagnitude / (2.0f * PlayerControl.run_speed_sub);
+
+        return distance;
+    }
+
     public float GetSpeedRate()
     {
         float player_speed_rate = Mathf.InverseLerp(0.0f, PlayerControl.RUN_SPEED_MAX, this.GetComponent<Rigidbody>().velocity.magnitude);

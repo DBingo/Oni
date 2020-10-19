@@ -385,9 +385,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OniGroupPrefab: {fileID: 406231440478788921, guid: 0a6051ee34c364b4dad6381c3d000d65,
     type: 3}
+  OniYamaPrefab:
+  - {fileID: 8488893900304000916, guid: 97e2f644c492dc14c800953093119e07, type: 3}
+  - {fileID: 8488893900304000916, guid: 1f251be06dead8042952f2dc482c2f8b, type: 3}
+  - {fileID: 8488893900304000916, guid: fdd93a786c8a78841a0758c646da11b8, type: 3}
+  OniEmitterPrefab: {fileID: 6286232264670892469, guid: 379b6b8f0f74c0f4ab6b5f6bc7615ee4,
+    type: 3}
   player: {fileID: 0}
   main_camera: {fileID: 0}
   score_control: {fileID: 0}
+  oni_emitter: {fileID: 0}
   oni_group_num: 0
   oni_group_appear_max: 10
   oni_group_complite: 0
