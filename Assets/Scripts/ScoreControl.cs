@@ -5,7 +5,10 @@ public class ScoreControl : MonoBehaviour
     private float timer;
     private int targetNum;
     private int currentNum;
+
+    public GameObject uiScore;
     public UnityEngine.UI.Image[] uiImageScoreDigits;
+    public UnityEngine.Sprite[] numSprites;
 
     void Start()
     {
@@ -20,11 +23,9 @@ public class ScoreControl : MonoBehaviour
             // 最快每 0.1 秒增加一次分数
             if (timer > 0.1f)
             {
-                // int idx = Random.Range(0, this.CountUpSounds.Length);
-                // this.count_up_audio.PlayOneShot(this.CountUpSounds[idx]);
-
                 this.timer = 0.0f;
 
+                // 差距比较大时每次增加5个
                 if (this.targetNum - this.currentNum > 10)
                 {
                     this.currentNum += 5;
@@ -36,6 +37,7 @@ public class ScoreControl : MonoBehaviour
             }
         }
 
+        // 数字在增加的时候，稍微放大的效果
         float scale = 1.0f;
         if (this.targetNum != this.currentNum)
         {
@@ -44,13 +46,16 @@ public class ScoreControl : MonoBehaviour
 
         int disp_number = Mathf.Max(0, this.currentNum);
 
+        // 按位变化分数的显示
         for (int i = 0; i < this.uiImageScoreDigits.Length; i++)
         {
-            // 按位变化分数的显示
+            int number_at_digit = disp_number % 10;
+
+            this.uiImageScoreDigits[i].sprite = this.numSprites[number_at_digit];
+            this.uiImageScoreDigits[i].GetComponent<RectTransform>().localScale = Vector3.one * scale;
+
+            disp_number /= 10;
         }
-
-        Debug.Log(disp_number);
-
     }
 
     public void setNum(int num)
